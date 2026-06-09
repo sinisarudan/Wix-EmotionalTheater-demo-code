@@ -1,0 +1,101 @@
+body {
+    color: red !important;  
+    background-color: yellow !important;
+    border: 5px solid red !important;
+}
+
+.flip-horizontal {
+  transform: scaleX(-1);
+}
+
+.flip-vertical {
+  transform: scaleY(-1);
+}
+
+.flip-both {
+  transform: scale(-1, -1);
+}
+
+.clamp-text {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2; /* how many lines of text to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.clamp-text-3 {
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3; /* how many lines of text to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/*
+.chicken-sticky {
+  position: sticky;
+  top: 10%;
+  z-index: 1000;
+}*/
+
+.chicken-fixed {
+  /* background-color: yellow; */
+  /* border: 5px solid red !important; */
+  position: fixed;
+  /* top: 40px !important; */
+  top: -50px;
+  /* the position at which the animation of the chicken finished: 444px + 261px =  logoPosition + logoDimensions */
+  /* left: calc(444px + 261px); */
+  left: 70px;
+  /* top: 10%;
+  left: 40%; */
+  z-index: 10000;
+}
+
+.brighten-bg {
+  filter: brightness(1);
+  transition: filter 0.5s ease;
+}
+
+.dim-bg {
+  filter: brightness(0.4);
+  transition: filter 0.5s ease;
+}
+
+.white-border {
+  /* border: 6px solid white !important; */
+}
+
+.glow-text {
+  color: #fff;
+  text-shadow:
+    0 0 2px #fff,
+    0 0 4px #fff,
+    0 0 8px #00f0ff,
+    0 0 12px #00f0ff,
+    0 0 16px #00f0ff,
+    0 0 20px #00f0ff;
+}
+
+/* card flipping
+.flip-enter {
+  transform: rotateY(180deg);
+  transition: transform 0.6s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.flip-exit {
+  transform: rotateY(0deg);
+  transition: transform 0.6s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.card-back-inner {
+  transform: rotateY(180deg);
+} 
+*/
+
+.clickable {
+  cursor: pointer;
+}

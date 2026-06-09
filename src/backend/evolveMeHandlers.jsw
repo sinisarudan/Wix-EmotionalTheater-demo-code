@@ -1,0 +1,67 @@
+import { fetch } from 'wix-fetch';
+import CryptoJS from 'crypto-js';
+
+// const EVOLVE_ME_API_URL = 'https://openapi-stage.asa.org/user/tasks/steps'; 
+// const EVOLVE_ME_API_URL = 'https://evolveme-api-stage.asa.org/user/tasks/steps'; 
+const EVOLVE_ME_API_URL = 'https://evolveme-api.asa.org/user/tasks/steps';
+const PARTNER_SECRET_KEY = 'e9cf2c4c-ec70-4e1b-85c5-204fd2a3f4c6';
+
+/**
+ * Generate a signature for the payload.
+ * @param {string} key - The partner secret key.
+ * @param {object} payload - The payload to sign.
+ * @returns {string} - The generated signature.
+ */
+function createSignature(key, payload) {
+    const json = JSON.stringify(payload);
+    console.log("Payload for Signature:", json); // Log payload
+    const hash = CryptoJS.HmacSHA256(json, key);
+    const signature = CryptoJS.enc.Hex.stringify(hash);
+    console.log("Generated Signature:", signature); // Log signature
+    return signature;
+}
+
+/**
+ * Complete a user task step.
+ * @param {string} userId - The user ID.
+ * @param {string} uniqueTaskKey - The unique task key.
+ * @param {number} stepNumber - The step number.
+ * @returns {Promise<object>} - The response from the EvolveMe API.
+ */
+export async function completeUserTaskStep(userId, uniqueTaskKey, stepNumber) {
+    const payload = {
+        userId,
+        uniqueTaskKey,
+        stepNumber
+    };
+
+    const signature = createSignature(PARTNER_SECRET_KEY, payload);
+    console.log("SIGNATURE:", signature)
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-EM-Signature': signature
+        },
+        body: JSON.stringify(payload)
+    };
+
+    try {
+        const response = await fetch(EVOLVE_ME_API_URL, options);
+        console.log("Response Status:", response.status); // Log status
+        console.log("Response Headers:", response.headers); // Log headers
+        const result = await response.json();
+
+        if (!response.ok) {
+            console.log("Error Result:", result); // Log error result
+            throw new Error(`API Error: ${result.message} (Code: ${result.code})`);
+        }
+
+        console.log("Success Result:", result); // Log success result
+        return result;
+    } catch (error) {
+        console.error('Error completing user task step:', error);
+        throw error;
+    }
+}
